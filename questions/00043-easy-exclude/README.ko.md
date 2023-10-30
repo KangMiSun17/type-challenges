@@ -5,7 +5,53 @@
 예시:
 
 ```ts
-type Result = MyExclude<'a' | 'b' | 'c', 'a'> // 'b' | 'c'
+type Result = MyExclude<"a" | "b" | "c", "a"> // 'b' | 'c'
+```
+
+정답:
+
+```ts
+type MyExclude<T, U> = T extends U ? never : T
+```
+
+[T 에 U 타입이 있으면 제거하겠다는 뜻](https://ghaiklor.github.io/type-challenges-solutions/ko/easy-exclude.html)
+
+## omit 과의 차이점
+
+https://j-ungry.tistory.com/353
+
+Omit : 객체 형태의 타입에서 특정한 프로퍼티들을 제외 시켜줌 ( 객체 에서 프로퍼티 를 제외 )
+
+Exclude : 여러개의 타입이 함께 존재하는 유니언 타입에서 특정 타입을 제거해준다 ( 타입 에서 타입 을 제외 )
+
+### Exclude
+
+```ts
+// enum 을 선언
+enum Languages {
+  KOREAN = "kr",
+  ENGLISH = "en",
+  JAPANESE = "jp",
+}
+
+// Exclude 를 사용해서 제외할 수 있다.
+type WithoutJapan = Exclude<Languages, Languages.JAPANESE>
+
+// work
+const kor: WithoutJapan = Languages.KOREAN
+// error : 제외한 JAPANESE 를 불러오려해 에러가 난다
+const eng: WithoutJapan = Languages.JAPANESE
+```
+
+### Omit
+
+```ts
+// error : Omit 을 사용하면 제외 되지 않는다
+type WithoutKorean = Omit<Languages, Languages.KOREAN>
+
+// 실제 제외되지 않았기 때문에 정상 동작한다
+const withoutKor: WithoutKorean = Languages.KOREAN
+console.log(withoutKor)
 ```
 
 <!--info-footer-start--><br><a href="../../README.ko.md" target="_blank"><img src="https://img.shields.io/badge/-%EB%8F%8C%EC%95%84%EA%B0%80%EA%B8%B0-grey" alt="돌아가기"/></a> <a href="https://tsch.js.org/43/answer/ko" target="_blank"><img src="https://img.shields.io/badge/-%EC%A0%95%EB%8B%B5%20%EA%B3%B5%EC%9C%A0%ED%95%98%EA%B8%B0-teal" alt="정답 공유하기"/></a> <a href="https://tsch.js.org/43/solutions" target="_blank"><img src="https://img.shields.io/badge/-%EC%A0%95%EB%8B%B5%20%EB%B3%B4%EA%B8%B0-de5a77?logo=awesome-lists&logoColor=white" alt="정답 보기"/></a> <!--info-footer-end-->
